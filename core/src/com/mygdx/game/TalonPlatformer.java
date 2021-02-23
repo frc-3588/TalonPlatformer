@@ -21,7 +21,7 @@ public class TalonPlatformer extends Game {
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
+        batch.dispose();
+        shapeRenderer.dispose();
 	}
 }
