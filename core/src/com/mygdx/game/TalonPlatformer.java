@@ -10,7 +10,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class TalonPlatformer extends Game {
 	SpriteBatch batch;
-	ShapeRenderer shapeRenderer;
+    ShapeRenderer shapeRenderer;
+    
+    public static final int V_WIDTH = 400;
+    public static final int V_HEIGHT = 208;
 	
 	@Override
 	public void create () {
