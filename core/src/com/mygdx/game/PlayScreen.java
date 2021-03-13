@@ -49,9 +49,16 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float deltaTime) {
-        if (Gdx.input.isTouched()) {
-            // Temporary
-            gamecam.position.x += 100 * deltaTime;
+        // if (Gdx.input.isTouched()) {
+        //     // Temporary
+        //     gamecam.position.x += 100 * deltaTime;
+        // }
+        if (Gdx.input.isKeyPressed(Input.keys.A)) {
+            gamecam.position.x -= 300 * deltaTime;
+        }
+
+        if (Gdx.input.isKeyPressed(Input.keys.D)) {
+            gamecam.position.x += 300 * deltaTime;
         }
     }
 
@@ -68,7 +75,7 @@ public class PlayScreen implements Screen {
         update(delta);
 
         // Clear the game screen with Black
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         renderer.render();

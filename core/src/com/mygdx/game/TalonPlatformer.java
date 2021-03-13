@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class TalonPlatformer extends Game {
-	SpriteBatch batch;
-    ShapeRenderer shapeRenderer;
+	public static final SpriteBatch batch;
+    public static final ShapeRenderer shapeRenderer;
     
     public static final int V_WIDTH = 400;
     public static final int V_HEIGHT = 208;
@@ -19,12 +19,19 @@ public class TalonPlatformer extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		shapeRenderer = new ShapeRenderer();
-		setScreen(new MenuScreen(this));
+        setScreen(new MenuScreen(this));
+        //setScreen(new PlayScreen(this));
 	}
 	
 	@Override
 	public void dispose () {
         batch.dispose();
+        super.dispose();
         shapeRenderer.dispose();
-	}
+    }
+    
+    @Override
+    public void render() {
+        super.render();
+    }
 }
