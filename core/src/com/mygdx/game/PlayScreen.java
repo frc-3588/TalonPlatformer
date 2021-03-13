@@ -1,10 +1,23 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -37,13 +50,13 @@ public class PlayScreen implements Screen {
          gamecam = new OrthographicCamera();
 
          // Create a FitViewPort to maintain virtual aspect ratio despite what the player does with the screen size
-         gamePort = new FitViewport(TalonPlatformer.V_WIDTH, TalonPlatformer.V_HEIGHT, gameCam);
+         gamePort = new FitViewport(TalonPlatformer.V_WIDTH, TalonPlatformer.V_HEIGHT, gamecam);
 
          // Create our game HUD for scores/timers/level info
          hud = new Hud(game.batch);
 
          // Load our map and setup our map renderer
-         mapLoader = new TmxMapLoader();
+         maploader = new TmxMapLoader();
          map = maploader.load("Talon platformer map.tmx");
          renderer = new OrthogonalTiledMapRenderer(map);
 
@@ -65,7 +78,7 @@ public class PlayScreen implements Screen {
 
          // Create ground bodies/fixtures
          for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
-             Rectangle rect = ((RectangleMapObject) object).getRectangle();
+             com.badlogic.gdx.math.Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
              bdef.type = BodyDef.BodyType.StaticBody;
              bdef.position.set(rect.getX() + rect.getWidth() / 2, rect.getY() + rect.getHeight() / 2);
@@ -90,11 +103,11 @@ public class PlayScreen implements Screen {
         //     // Temporary
         //     gamecam.position.x += 100 * deltaTime;
         // }
-        if (Gdx.input.isKeyPressed(Input.keys.A)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             gamecam.position.x -= 300 * deltaTime;
         }
 
-        if (Gdx.input.isKeyPressed(Input.keys.D)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             gamecam.position.x += 300 * deltaTime;
         }
     }
