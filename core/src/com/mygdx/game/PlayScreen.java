@@ -41,6 +41,9 @@ public class PlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr;
 
+    // Player sprite
+    private Player player;
+
     public PlayScreen(TalonPlatformer game) {
         this.game = game;
          // Subject to change
@@ -50,7 +53,7 @@ public class PlayScreen implements Screen {
          gamecam = new OrthographicCamera();
 
          // Create a FitViewPort to maintain virtual aspect ratio despite what the player does with the screen size
-         gamePort = new FitViewport(TalonPlatformer.V_WIDTH, TalonPlatformer.V_HEIGHT, gamecam);
+         gamePort = new FitViewport(TalonPlatformer.V_WIDTH / TalonPlatformer.PPM, TalonPlatformer.V_HEIGHT / TalonPlatformer.PPM, gamecam);
 
          // Create our game HUD for scores/timers/level info
          hud = new Hud(game.batch);
@@ -58,14 +61,19 @@ public class PlayScreen implements Screen {
          // Load our map and setup our map renderer
          maploader = new TmxMapLoader();
          map = maploader.load("Talon platformer map.tmx");
-         renderer = new OrthogonalTiledMapRenderer(map);
+         renderer = new OrthogonalTiledMapRenderer(map, 1 / TalonPlatformer.PPM);
 
          // Initially set our gamecam to be centered corretly at the start of the game
          gamecam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
-         // Temporary gravity
-         world = new World(new Vector2(0, 0), true);
+         // World creation with gravity
+         world = new World(new Vector2(0, -10), true);
+
+         // Allows for debug lines of our box2d world
          b2dr = new Box2DDebugRenderer();
+
+         // Create the player in our game world
+         player = new Player("Bob", 3, world);
 
          // Bodies and fixtures
          BodyDef bdef = new BodyDef();
@@ -81,11 +89,11 @@ public class PlayScreen implements Screen {
              com.badlogic.gdx.math.Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
              bdef.type = BodyDef.BodyType.StaticBody;
-             bdef.position.set(rect.getX() + rect.getWidth() / 2, rect.getY() + rect.getHeight() / 2);
+             bdef.position.set((rect.getX() + rect.getWidth() / 2) / TalonPlatformer.PPM, (rect.getY() + rect.getHeight() / 2) / TalonPlatformer.PPM);
 
              body = world.createBody(bdef);
 
-             shape.setAsBox(rect.getWidth() / 2, rect.getHeight() / 2);
+             shape.setAsBox(rect.getWidth() / 2 / TalonPlatformer.PPM, rect.getHeight() / 2 / TalonPlatformer.PPM);
              fdef.shape = shape;
              body.createFixture(fdef);
          }
@@ -103,6 +111,19 @@ public class PlayScreen implements Screen {
         //     // Temporary
         //     gamecam.position.x += 100 * deltaTime;
         // }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.RIHGT) && player.b2body.getLinearVelocity().x <= 2) {
+            player.b2body.applyLinearImpulese(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2) {
+            player.b2body.applyLinearImpulese(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+        }
+
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             gamecam.position.x -= 300 * deltaTime;
         }
@@ -114,6 +135,10 @@ public class PlayScreen implements Screen {
 
     public void update(float deltaTime) {
         handleInput(deltaTime);
+
+        world.step(1/60f, 6, 2);
+
+        gamecam.position.x = player.b2body.getPosition().x;
 
         gamecam.update();
         renderer.setView(gamecam);
