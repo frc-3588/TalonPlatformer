@@ -72,31 +72,10 @@ public class PlayScreen implements Screen {
          // Allows for debug lines of our box2d world
          b2dr = new Box2DDebugRenderer();
 
+         new B2WorldCreator(world, map);
+
          // Create the player in our game world
-         player = new Player("Bob", 3, world);
-
-         // Bodies and fixtures
-         BodyDef bdef = new BodyDef();
-         // Temporary
-         PolygonShape shape = new PolygonShape();
-         FixtureDef fdef = new FixtureDef();
-         Body body;
-
-         // Creating a body and fixture for every corresponding object in the each of the map layers
-
-         // Create ground bodies/fixtures
-         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
-             com.badlogic.gdx.math.Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-             bdef.type = BodyDef.BodyType.StaticBody;
-             bdef.position.set((rect.getX() + rect.getWidth() / 2) / TalonPlatformer.PPM, (rect.getY() + rect.getHeight() / 2) / TalonPlatformer.PPM);
-
-             body = world.createBody(bdef);
-
-             shape.setAsBox(rect.getWidth() / 2 / TalonPlatformer.PPM, rect.getHeight() / 2 / TalonPlatformer.PPM);
-             fdef.shape = shape;
-             body.createFixture(fdef);
-         }
+         player = new Player(world);
     }
     
     @Override
@@ -107,29 +86,16 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float deltaTime) {
-        // if (Gdx.input.isTouched()) {
-        //     // Temporary
-        //     gamecam.position.x += 100 * deltaTime;
-        // }
-
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIHGT) && player.b2body.getLinearVelocity().x <= 2) {
-            player.b2body.applyLinearImpulese(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2) {
+            player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2) {
-            player.b2body.applyLinearImpulese(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            gamecam.position.x -= 300 * deltaTime;
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            gamecam.position.x += 300 * deltaTime;
+            player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
         }
     }
 
@@ -147,6 +113,7 @@ public class PlayScreen implements Screen {
     @Override
     public void render(float delta) 
     {   
+        // Seperate our update logic from render
         update(delta);
 
         // Clear the game screen with Black
@@ -200,8 +167,11 @@ public class PlayScreen implements Screen {
     @Override
     public void dispose() 
     {
-    
-
+        map.dispose();
+        renderer.dispose();
+        world.dispose();
+        b2dr.dispose();
+        hud.dispose();
     }
     
 }
