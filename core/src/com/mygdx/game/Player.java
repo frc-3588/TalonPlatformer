@@ -14,6 +14,8 @@ public class Player extends Sprite{
     private boolean playerCanJump = true;
     public World world;
     public Body b2body;
+    private int xPosition;
+    private int yPosition;
 
     //constructor
     public Player(World world, String playerName) {
@@ -68,6 +70,22 @@ public class Player extends Sprite{
         playerName = name;
     }
 
+    //PLAYER LOCATION//
+    public boolean didPlayerFall(int yPosition){
+        if(yPosition < 0){
+            return true;
+        }
+    }
+
+    public boolean outOfBounds(int xPosition, int minX, int maxX, int yPosition, int minY, int maxY){
+        if(xPosition > maxX || xPosition < minX){
+            return true;
+        }else if(yPosition > maxY || yPosition < minY){
+            return true;
+        }else{
+            return false;
+        }
+    }
     /*
     
 
