@@ -16,8 +16,10 @@ public class Hud {
     private int keyCount;
     private Player player;
     private int lives;
-    private int worldTimer;
+    private static int worldTimer;
     private Viewport viewport;
+    private static float timeCount;
+    private static Player playersIsDead;
 
     public Stage stage;
     
@@ -25,7 +27,7 @@ public class Hud {
     private Label keyLabel;
     private Label livesLabel;
     private Label timeLabel;
-    private Label countdownLabel;
+    private static Label countdownLabel;
     private Label keycountLabel;
     private Label livecountLabel;
 
@@ -41,7 +43,7 @@ public class Hud {
 
             //Initializing of instance variables
             keyCount = 1;
-            worldTimer = 60;
+            worldTimer = 300;
             this.player = player;
             lives = player.getLives();
             
@@ -49,9 +51,12 @@ public class Hud {
             keyLabel = new Label("KEYS", new Label.Labelstyle(new Bitmapfont(), Color.WHITE));
             livesLabel = new Label("LIVES", new Label.Labelstyle(new Bitmapfont(), Color.WHITE));
             timeLabel = new Label("TIME", new Label.Labelstyle(new Bitmapfont(), Color.WHITE));
-            countdownLabel = new Label("60", new Label.Labelstyle(new Bitmapfont(), Color.WHITE));
-            keycountLabel = new Label("1", new Label.Labelstyle(new Bitmapfont(), Color.WHITE));
-            livecountLabel = new Label("3", new Label.Labelstyle(new Bitmapfont(), Color.WHITE));
+            
+            /*These labels are special, they are able to format the string into any digit integer.
+            For example, 3 digits would be 001 for keycount as an example.*/
+            countdownLabel = new Label("%03d", new Label.Labelstyle(new Bitmapfont(), Color.WHITE));
+            keycountLabel = new Label("%01d", new Label.Labelstyle(new Bitmapfont(), Color.WHITE));
+            livecountLabel = new Label("%01d", new Label.Labelstyle(new Bitmapfont(), Color.WHITE));
             
 
             
@@ -68,7 +73,12 @@ public class Hud {
 
     
     }
-    public void update(float dt){
-            
+    public static void update(float dt){
+            timeCount += dt;
+            if(timeCount >= 1){
+                    worldTimer --;
+                    countdownLabel.setText(String.format("%03D", worldTimer));
+                    timeCount = 0;
+            }    }
             }
 }
