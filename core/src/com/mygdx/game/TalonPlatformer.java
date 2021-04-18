@@ -11,11 +11,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class TalonPlatformer extends Game {
 	SpriteBatch batch;
 	ShapeRenderer shapeRenderer;
+    BitmapFont font;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		shapeRenderer = new ShapeRenderer();
+        font = new BitmapFont();
 		setScreen(new MenuScreen(this));
 	}
 	
@@ -23,5 +25,6 @@ public class TalonPlatformer extends Game {
 	public void dispose () {
         batch.dispose();
         shapeRenderer.dispose();
+        font.dispose();
 	}
 }
