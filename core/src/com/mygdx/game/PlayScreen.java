@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -23,10 +24,12 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import javafx.scene.shape.Rectangle;
-
 public class PlayScreen implements Screen {
+    // Reference to the game, used to set screems
     private TalonPlatformer game;
+    private TextureAtlas atlas;
+
+
     // Texture texture;
     private OrthographicCamera gamecam;
     private Viewport gamePort;
@@ -45,6 +48,9 @@ public class PlayScreen implements Screen {
     private Player player;
 
     public PlayScreen(TalonPlatformer game) {
+        // CHANGE TO PNG WITH ALL THE SPRITES 
+        atlas = new TextureAtlas("Player_and_Enemies.pack");
+
         this.game = game;
          // Subject to change
          // texture = new Texture("badlogic.jpg");
@@ -60,7 +66,7 @@ public class PlayScreen implements Screen {
 
          // Load our map and setup our map renderer
          maploader = new TmxMapLoader();
-         map = maploader.load("Talon platformer map.tmx");
+         map = maploader.load("Talon_platformer_map.tmx");
          renderer = new OrthogonalTiledMapRenderer(map, 1 / TalonPlatformer.PPM);
 
          // Initially set our gamecam to be centered corretly at the start of the game
@@ -75,7 +81,11 @@ public class PlayScreen implements Screen {
          new B2WorldCreator(world, map);
 
          // Create the player in our game world
-         player = new Player(world);
+         player = new Player(world, this);
+    }
+
+    public TextureAtlas getAtlas() {
+        return atlas;
     }
     
     @Override
@@ -86,8 +96,11 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float deltaTime) {
+        // if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.b2body.getLinearVelocity().y == 0) {
+        //     player.b2body.applyForceToCenter(0, 150, true);
+        // }
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);
+            player.jump();
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2) {
@@ -103,6 +116,8 @@ public class PlayScreen implements Screen {
         handleInput(deltaTime);
 
         world.step(1/60f, 6, 2);
+
+        player.update(deltaTime);
 
         gamecam.position.x = player.b2body.getPosition().x;
 
@@ -129,8 +144,7 @@ public class PlayScreen implements Screen {
         // Set our batch to now draw what the Hud camera sees
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
-
-        // game.batch.draw(texture, 0, 0);
+        player.draw(game.batch);
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
