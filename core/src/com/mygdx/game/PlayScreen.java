@@ -66,7 +66,7 @@ public class PlayScreen implements Screen {
 
          // Load our map and setup our map renderer
          maploader = new TmxMapLoader();
-         map = maploader.load("Talon_platformer_map.tmx");
+         map = maploader.load("Talon platformer map.tmx");
          renderer = new OrthogonalTiledMapRenderer(map, 1 / TalonPlatformer.PPM);
 
          // Initially set our gamecam to be centered corretly at the start of the game
@@ -82,6 +82,8 @@ public class PlayScreen implements Screen {
 
          // Create the player in our game world
          player = new Player(world, this);
+
+         world.setContactListener(new WorldContactListener());
     }
 
     public TextureAtlas getAtlas() {
@@ -144,6 +146,7 @@ public class PlayScreen implements Screen {
         // Set our batch to now draw what the Hud camera sees
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
+
         player.draw(game.batch);
         game.batch.end();
 

@@ -32,20 +32,20 @@ public class B2WorldCreator {
              shape.setAsBox(rect.getWidth() / 2 / TalonPlatformer.PPM, rect.getHeight() / 2 / TalonPlatformer.PPM);
              fdef.shape = shape;
              body.createFixture(fdef);
+
          }
 
-         for (MapObject object : map.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)) {
-            com.badlogic.gdx.math.Rectangle rect = ((RectangleMapObject) object).getRectangle();
+        for (MapObject object : map.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)) {
+             com.badlogic.gdx.math.Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2) / TalonPlatformer.PPM, (rect.getY() + rect.getHeight() / 2) / TalonPlatformer.PPM);
+             bdef.type = BodyDef.BodyType.StaticBody;
+             bdef.position.set((rect.getX() + rect.getWidth() / 2) / TalonPlatformer.PPM, (rect.getY() + rect.getHeight() / 2) / TalonPlatformer.PPM);
 
-            body = world.createBody(bdef);
+             body = world.createBody(bdef);
 
-            shape.setAsBox(rect.getWidth() / 2 / TalonPlatformer.PPM, rect.getHeight() / 2 / TalonPlatformer.PPM);
-            fdef.shape = shape;
-            body.createFixture(fdef);
-
-        }
+             shape.setAsBox(rect.getWidth() / 2 / TalonPlatformer.PPM, rect.getHeight() / 2 / TalonPlatformer.PPM);
+             fdef.shape = shape;
+             body.createFixture(fdef);
+         }
     }
 }
