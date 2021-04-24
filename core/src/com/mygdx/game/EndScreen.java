@@ -24,8 +24,6 @@ public class EndScreen implements Screen {
     float width = 100;
     float height = 75;
 
-    boolean playerLost = false;
-
     public EndScreen(TalonPlatformer game) {
         this.game = game;
 
@@ -66,7 +64,7 @@ public class EndScreen implements Screen {
         game.shapeRenderer.end();
 
         game.batch.begin();
-        if(playerLost){
+        if(Player.getState() == State.DEAD){
             game.font.draw(game.batch, "Game Over", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .75f);
 
         }else{
