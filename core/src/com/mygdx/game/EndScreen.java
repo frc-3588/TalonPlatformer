@@ -13,9 +13,8 @@ import com.badlogic.gdx.math.Vector2;
 
 /* Things to be done:
 End Screen
-- Either load a win or lose image for the background depending on what happened in the play screen
-- Loaded image for play again button
-- Switch to the play screen when the button is clicked (both computers and touch screens)
+- Loaded image for play again button - done
+- Switch to the play screen when the button is clicked (both computers and touch screens)-done
 */
 public class EndScreen implements Screen {
     TalonPlatformer game;
@@ -35,15 +34,7 @@ public class EndScreen implements Screen {
     public EndScreen(TalonPlatformer game) {
         this.game = game;
 
-        Texture background = new Texture("background.jpeg");
-        TextureRegion myTextureRegion = new TextureRegion(background);
-        TextureRegion drawable = new TextureRegion(myTextureRegion);
-        ImageButton button = new ImageButton(drawable);
-        button.setPosition(0, 0);
-
-        stage = new Stage(new ScreenViewport());
-        stage.addActor(button);
-        Gdx.input.setInputProcessor(stage); 
+        playerLost = Player.isPlayerDead();//state.get smthg
     }
     @Override
     public void show() 
@@ -72,11 +63,14 @@ public class EndScreen implements Screen {
 
         game.batch.begin();
         batch.draw(background, 0, 0);
+        game.batch.end();
 
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         game.shapeRenderer.setColor(58, 29, 0, 1);
         game.shapeRenderer.rect(rectX, rectY, width, height);
+        game.shapeRenderer.end();
 
+        game.batch.begin();
         if(playerLost){
             game.font.draw(game.batch, "Game Over", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .75f);
 
@@ -85,7 +79,6 @@ public class EndScreen implements Screen {
 
         }
         game.font.draw(game.batch, "Press this button to restart.", rectX, rectY);
-
         game.batch.end();
         
     }
