@@ -63,11 +63,6 @@ public class EndScreen implements Screen {
     {
      Gdx.gl.glClearColor(.25f, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        game.batch.begin();
-        game.font.draw(game.batch, "You win!", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .75f);
-        game.font.draw(game.batch, "Press this button to restart.", rectX, rectY);
-
        //new 
 
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -75,6 +70,9 @@ public class EndScreen implements Screen {
         game.shapeRenderer.rect(rectX, rectY, width, height);
         game.shapeRenderer.end();
         //
+        game.batch.begin();
+        game.font.draw(game.batch, "You win!", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .75f);
+        game.font.draw(game.batch, "Press this button to restart.", rectX, rectY);
         
         game.batch.end();
 
