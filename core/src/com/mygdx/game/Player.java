@@ -1,4 +1,5 @@
 package com.mygdx.game;
+
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,8 +12,9 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
-public class Player extends Sprite {
-    public enum State { FALLING, JUMPING, IDLE, ROLLING };
+public class Player extends Sprite
+{
+public enum State { FALLING, JUMPING, IDLE, ROLLING, DEAD };
     public State currentState;
     public State previousState;
     public World world;
@@ -22,19 +24,18 @@ public class Player extends Sprite {
     private Animation<TextureRegion> playerJump;
     private boolean rollingRight;
     private float stateTimer;
-    private int xPosition;
-    private int yPosition;
-    private boolean playerIsDead = false;
-    private boolean playerCanMove = true;
-    private boolean playerCanJump = true;
-    private int lives = 3;
+    private float timeCount;
+    private boolean loseLife;
+    public int lives = 3;
     private int minX;
     private int minY;
     private int maxX;
     private int maxY;
+    private PlayScreen screen;
 
-    public Player(World world, PlayScreen screen) {
+public Player(World world, PlayScreen screen) {
         super(screen.getAtlas().findRegion("Player"));
+        this.screen = screen;
         this.world = world;
         currentState = State.IDLE;
         previousState = State.IDLE;
@@ -52,18 +53,31 @@ public class Player extends Sprite {
             frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 16));
             playerJump = new Animation<TextureRegion>(0.1f, frames);
         }
-    
+
         playerIdle = new TextureRegion(getTexture(), 0, 0, 16, 16);
         definePlayer();
         setBounds(0, 0, 16 / TalonPlatformer.PPM, 16 / TalonPlatformer.PPM);
         setRegion(playerIdle);
+
+        minX = 0;
+        minY = 0;
+        maxX = 2500;
+        maxY = 1000;
+
     }
 
     public void update(float dt) {
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(getFrame(dt));
-    }
 
+        if(loseLife())
+        {
+            lives --;
+            resetPlayer();
+            System.out.println(lives);
+        }
+    }
+    
     public TextureRegion getFrame(float dt) {
         currentState = getState();
 
@@ -87,7 +101,7 @@ public class Player extends Sprite {
             rollingRight = false;
         }
 
-        else if ((b2body.getLinearVelocity().x > 0 || rollingRight) && region.isFlipX()) {
+        else if ((b2body.getLinearVelocity().x > 0 || !rollingRight) && region.isFlipX()) {
             region.flip(true, false);
             rollingRight = true;
         }
@@ -97,6 +111,16 @@ public class Player extends Sprite {
     }
 
     public State getState() {
+        if(currentState == State.DEAD)
+        {
+            System.out.println("STUPID LITTLE BAKA");
+            return State.DEAD;
+        }
+        
+        if(lives == 0) {
+            return State.DEAD;
+        }
+        
         if (b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING)) {
             return State.JUMPING;
         }
@@ -108,10 +132,16 @@ public class Player extends Sprite {
         else if (b2body.getLinearVelocity().x != 0) {
             return State.ROLLING;
         }
+        
 
         else {
             return State.IDLE;
         }
+    }
+
+    public void setState()
+    {
+        currentState = State.DEAD;
     }
 
     public void definePlayer() {
@@ -132,6 +162,11 @@ public class Player extends Sprite {
         fdef2.shape = feet;
         b2body.createFixture(fdef2);
     }
+    
+    public void resetPlayer() 
+        {
+            definePlayer();
+        }
 
     public void jump() {
         if (currentState !=State.JUMPING) {
@@ -140,40 +175,13 @@ public class Player extends Sprite {
         }
     }
 
-    public void resetPlayer() {
-        lives = 3;
-        playerIsDead = false;
-        playerCanMove = true;
-        playerCanJump = true;
-    }
-
-    public void setLives(int x) {
-        lives = x;
-    }
-
-    public boolean isPlayerDead() {
-        if (lives == 0) {
-            playerIsDead = true;
-            playerCanJump = false;
-            playerCanMove = false;
-        }
-
-        return playerIsDead;
-    }
-
-    public boolean didPlayerFall(int yPosition) {
-        if (yPosition < 0) {
+    public boolean loseLife() {
+        
+        if (b2body.getPosition().x > maxX || b2body.getPosition().x < minX) {
             return true;
         }
 
-        return false;
-    }
-
-    public boolean outOfbounds(int xPosition, int minX, int maxX, int yPosition, int minY, int maxY) {
-        if (xPosition > maxX || xPosition < minX) {
-            return true;
-        }
-        else if (yPosition < maxY || yPosition < minY) {
+        if (b2body.getPosition().y > maxY || b2body.getPosition().y < minY) {
             return true;
         }
 
@@ -181,6 +189,8 @@ public class Player extends Sprite {
             return false;
         }
     }
-
+    public int getLives()
+    {
+        return lives;
+    }
 }
-
