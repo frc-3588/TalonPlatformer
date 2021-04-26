@@ -1,0 +1,12 @@
+
+Player_and_Enemies.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Player
+  rotate: false
+  xy: 1, 1
+  size: 160, 16
+  orig: 160, 16
+  offset: 0, 0
+  index: -1
