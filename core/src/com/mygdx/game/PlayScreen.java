@@ -75,7 +75,7 @@ public class PlayScreen implements Screen{
 
          // Load our map and setup our map renderer
          maploader = new TmxMapLoader();
-         map = maploader.load("Talon_platformer_map.tmx");
+         map = maploader.load("LevelOne.tmx");
          renderer = new OrthogonalTiledMapRenderer(map, 1 / TalonPlatformer.PPM);
 
          // Initially set our gamecam to be centered corretly at the start of the game
@@ -92,6 +92,7 @@ public class PlayScreen implements Screen{
          // Create the player in our game world
          player = new Player(world, this); 
          
+         world.setContactListener(new WorldContactListener());
          // Create our game HUD for scores/timers/level info
          hud = new Hud(player, game.batch);
     }

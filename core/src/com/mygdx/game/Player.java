@@ -26,7 +26,8 @@ public enum State { FALLING, JUMPING, IDLE, ROLLING, DEAD };
     private float stateTimer;
     private float timeCount;
     private boolean loseLife;
-    public int lives = 3;
+    //public int lives = 3;
+    public int lives = 1000;
     private int minX;
     private int minY;
     private int maxX;
@@ -151,18 +152,23 @@ public Player(World world, PlayScreen screen) {
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(1 / TalonPlatformer.PPM);
+        shape.setRadius(6 / TalonPlatformer.PPM);
+        
         fdef.shape = shape;
         b2body.createFixture(fdef);
+        
+        EdgeShape head = new EdgeShape();
+        head.set(new Vector2(-2 / TalonPlatformer.PPM, 6 / TalonPlatformer.PPM), new Vector2(2 / TalonPlatformer.PPM, 6 / TalonPlatformer.PPM));
+        fdef.shape = head;
         fdef.isSensor = true;
 
-        FixtureDef fdef2 = new FixtureDef();
-        EdgeShape feet = new EdgeShape();
-        feet.set(new Vector2(-2 / TalonPlatformer.PPM, -6 / TalonPlatformer.PPM), new Vector2(2 / TalonPlatformer.PPM, -6 / TalonPlatformer.PPM));
-        fdef2.shape = feet;
-        b2body.createFixture(fdef2);
+        b2body.createFixture(fdef).setUserData("head");
 
-        b2body.createFixture(fdef).setUserData("player");
+        // FixtureDef fdef2 = new FixtureDef();
+        // fdef2.shape = feet;
+        // b2body.createFixture(fdef2);
+
+        // b2body.createFixture(fdef).setUserData("player");
     }
     
     public void resetPlayer() 
