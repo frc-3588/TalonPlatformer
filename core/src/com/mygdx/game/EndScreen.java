@@ -24,6 +24,8 @@ public class EndScreen implements Screen {
     float width = 100;
     float height = 75;
 
+    Texture texture = new Texture("Texture.png");
+
     public EndScreen(TalonPlatformer game) {
         this.game = game;
 
