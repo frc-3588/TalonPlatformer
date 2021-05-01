@@ -97,7 +97,7 @@ public class Hud implements Disposable{
                 countdownLabel.setText(String.format("%03d", worldTimer));
             }
             
-            //It is saying if the physics body of the player is at this position, you add 1 to the keyCount if the keyCount is less than 1.
+        //It is saying if the physics body of the player is at this position, you add 1 to the keyCount if the keyCount is less than 1.
         if(player.b2body.getPosition().x >= 25.2 && player.b2body.getPosition().y >= 1.5)
         {
                     if(keyCount <= 0)
@@ -106,6 +106,14 @@ public class Hud implements Disposable{
                     }
                     keycountLabel.setText(String.format("%01d", keyCount));
         }
+        // if(player.b2body.getPosition().x >= 25.2 && player.b2body.getPosition().y >= 1.5)
+        // {
+        //             if(keyCount <= 0)
+        //             {
+        //                     keyCount ++;
+        //             }
+        //             keycountLabel.setText(String.format("%01d", keyCount));
+        // }
         if(player.getState() == State.DEAD)
         {
                         lives = 0;

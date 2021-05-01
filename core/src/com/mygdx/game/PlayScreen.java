@@ -56,6 +56,8 @@ public class PlayScreen implements Screen{
     private static Player thePlayer;
     private static boolean isTouch;
 
+    private Enemies enemies;
+
     public PlayScreen(TalonPlatformer game) {
         // CHANGE TO PNG WITH ALL THE SPRITES 
         atlas = new TextureAtlas("Player_and_Enemies.pack");
@@ -79,7 +81,7 @@ public class PlayScreen implements Screen{
 
          // Load our map and setup our map renderer
          maploader = new TmxMapLoader();
-         map = maploader.load("LevelThree.tmx");
+         map = maploader.load("LevelOne.tmx");
          renderer = new OrthogonalTiledMapRenderer(map, 1 / TalonPlatformer.PPM);
 
          // Initially set our gamecam to be centered corretly at the start of the game
@@ -101,6 +103,8 @@ public class PlayScreen implements Screen{
          world.setContactListener(new WorldContactListener());
          // Create our game HUD for scores/timers/level info
          hud = new Hud(player, game.batch);
+
+         
     }
 
     public TextureAtlas getAtlas() {
@@ -143,6 +147,8 @@ public void update(float deltaTime) {
         renderer.setView(gamecam);
 
         hud.update(deltaTime, 0, true, true);
+
+
     }
     public static void setContact(boolean contactMade)
     {

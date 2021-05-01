@@ -150,11 +150,11 @@ public Player(World world, PlayScreen screen) {
     public void definePlayer() {
         BodyDef bdef = new BodyDef();
         //This the OG cuz
-        //bdef.position.set(32 / TalonPlatformer.PPM, 32 / TalonPlatformer.PPM);
+        bdef.position.set(32 / TalonPlatformer.PPM, 32 / TalonPlatformer.PPM);
         //This the second level cuz
         //bdef.position.set(32 / TalonPlatformer.PPM, 175 / TalonPlatformer.PPM);
         //This the third level cuz
-        bdef.position.set(32 / TalonPlatformer.PPM, 32 / TalonPlatformer.PPM);
+        //bdef.position.set(32 / TalonPlatformer.PPM, 32 / TalonPlatformer.PPM);
         //This the fourth level cuz
         //bdef.position.set(32 / TalonPlatformer.PPM, 200 / TalonPlatformer.PPM);
         //This the fifth level cuz
