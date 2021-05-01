@@ -144,7 +144,6 @@ public void update(float deltaTime) {
 
         hud.update(deltaTime, 0, true, true);
     }
-
     public static void setContact(boolean contactMade)
     {
         isTouch = contactMade;
