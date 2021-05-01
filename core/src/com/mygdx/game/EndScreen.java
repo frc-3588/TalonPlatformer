@@ -39,14 +39,6 @@ public class EndScreen implements Screen {
             }
             return true;
             }
-        });
-    }
-
-            /*@Override
-            public boolean keyTyped (char key) {
-                game.setScreen(new MenuScreen(game));
-                return true;
-            }
 
             @Override
             public boolean touchDown (int x, int y, int pointer, int button) {
@@ -54,7 +46,7 @@ public class EndScreen implements Screen {
                 return true;
             }
         });
-    }*/
+    }
 
     @Override
     public void render(float delta) 
