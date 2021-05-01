@@ -72,11 +72,11 @@ public class EndScreen implements Screen {
 
         game.batch.begin();
         if(Player.getState() == State.DEAD){
-            game.font.draw(game.batch, "Game Over", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            game.font.draw(game.texture, "Game Over", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             //game.font.draw(game.batch, "Game Over", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .75f);
 
         }else{
-            game.font.draw(game.batch, "You win!", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            game.font.draw(game.texture, "You win!", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
         game.batch.end();
         
