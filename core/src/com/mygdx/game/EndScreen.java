@@ -13,13 +13,13 @@ import com.badlogic.gdx.math.Vector2;
 
 /* Things to be done:
 End Screen
-- Loaded image for play again button - done
-- Switch to the play screen when the button is clicked (both computers and touch screens)-done
+- make end screen look niceer
+- Switch to the play screen when the button is clicked (both computers and touch screens) - bug
 */
 public class EndScreen implements Screen {
     TalonPlatformer game;
 
-    float rectX = 300;
+    float rectX = 250;
     float rectY = 150;
     float width = 100;
     float height = 75;
@@ -31,6 +31,7 @@ public class EndScreen implements Screen {
 
         playerLost = Player.isPlayerDead();//state.get smthg
     }
+
     @Override
     public void show() 
     {
@@ -56,24 +57,27 @@ public class EndScreen implements Screen {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
 		dx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-        batch.draw(background, 0, 0);
-        game.batch.end();
+        //game.batch.begin();
+        //batch.draw(background, 0, 0);
+        //game.batch.end();
 
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        game.shapeRenderer.setColor(58, 29, 0, 1);
+        game.shapeRenderer.setColor(0, 1, 0, 0);//should be green
         game.shapeRenderer.rect(rectX, rectY, width, height);
         game.shapeRenderer.end();
 
         game.batch.begin();
+        game.font.draw(game.batch, "RESTART", rectX + 10, rectY + 50);//this should appear inside the box
+        game.batch.end();
+
+        game.batch.begin();
         if(Player.getState() == State.DEAD){
-            game.font.draw(game.batch, "Game Over", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .75f);
+            game.font.draw(game.batch, "Game Over", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            //game.font.draw(game.batch, "Game Over", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .75f);
 
         }else{
-            game.font.draw(game.batch, "You win!", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .75f);
-
+            game.font.draw(game.batch, "You win!", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
-        game.font.draw(game.batch, "Press this button to restart.", rectX, rectY);
         game.batch.end();
         
     }
