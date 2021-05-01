@@ -19,6 +19,9 @@ End Screen
 public class EndScreen implements Screen {
     TalonPlatformer game;
 
+    int rectX = 250;
+    int rectY = 150;
+
     public EndScreen(TalonPlatformer game) {
         this.game = game;
 
