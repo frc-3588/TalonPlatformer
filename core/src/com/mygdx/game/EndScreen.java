@@ -34,18 +34,27 @@ public class EndScreen implements Screen {
 
             @Override
             public boolean keyDown(int keyCode) {
-                //try this first. if nothing happens, try the second one that I commented out
-                if (keyCode == Input.Keys.ANY_KEY) {
-                    game.setScreen(new MenuScreen(game));
-                }
-            //    if(Gdx.input.isKeyPressed(Keys.ANY_KEY)) {
-            //        game.setScreen(new MenuScreen(game));
-            //    }
-
-                return true;
+            if(Gdx.input.isKeyPressed(Keys.ANY_KEY)) {
+                game.setScreen(new MenuScreen(game));
+            }
+            return true;
             }
         });
     }
+
+            /*@Override
+            public boolean keyTyped (char key) {
+                game.setScreen(new MenuScreen(game));
+                return true;
+            }
+
+            @Override
+            public boolean touchDown (int x, int y, int pointer, int button) {
+                game.setScreen(new MenuScreen(game));
+                return true;
+            }
+        });
+    }*/
 
     @Override
     public void render(float delta) 
