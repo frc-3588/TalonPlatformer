@@ -148,43 +148,43 @@ public Player(World world, PlayScreen screen) {
         currentState = State.DEAD;
     }
 
-    // public void setKeys(int keys)
-    // {
-    //     keyCount = keys;
-    // }
+    public void setKeys(int keys)
+    {
+        keyCount = keys;
+    }
 
     public void definePlayer() {
         BodyDef bdef = new BodyDef();
         //This the OG cuz
-        //if(keyCount == 0)
-        //{
+        if(keyCount == 0)
+        {
             bdef.position.set(32 / TalonPlatformer.PPM, 32 / TalonPlatformer.PPM);
-        //}
+        }
         //This the second level cuz
-        // else if(keyCount == 1)
-        // {
-        //     bdef.position.set(32 / TalonPlatformer.PPM, 175 / TalonPlatformer.PPM);
-        // }
-        // //This the third level cuz
-        // else if(keyCount == 2)
-        // {
-        //     bdef.position.set(32 / TalonPlatformer.PPM, 175 / TalonPlatformer.PPM);
-        // }
-        // //This the fourth level cuz
-        // else if(keyCount == 3)
-        // {
-        //     bdef.position.set(32 / TalonPlatformer.PPM, 32 / TalonPlatformer.PPM);
-        // }
-        // //This the fifth level cuz
-        // else if(keyCount == 4)
-        // {
-        //     bdef.position.set(32 / TalonPlatformer.PPM, 200 / TalonPlatformer.PPM);
-        // }
+        else if(keyCount == 1)
+        {
+            bdef.position.set(2512 / TalonPlatformer.PPM, 256 / TalonPlatformer.PPM);
+        }
+        //This the third level cuz
+        else if(keyCount == 2)
+        {
+            bdef.position.set(5088 / TalonPlatformer.PPM, 40 / TalonPlatformer.PPM);
+        }
+        //This the fourth level cuz
+        else if(keyCount == 3)
+        {
+            bdef.position.set(7616 / TalonPlatformer.PPM, 80 / TalonPlatformer.PPM);
+        }
+        // // //This the fifth level cuz
+        else if(keyCount == 4)
+        {
+            bdef.position.set(10208 / TalonPlatformer.PPM, 190 / TalonPlatformer.PPM);
+        }
         //This is the sixth level cuz
-        // else if(keyCount == 5)
-        // {
-        //     bdef.position.set(32 / TalonPlatformer.PPM, 150 / TalonPlatformer.PPM);
-        // }
+        else
+        {
+            bdef.position.set(12784 / TalonPlatformer.PPM, 40 / TalonPlatformer.PPM);
+        }
         
 
         
@@ -213,8 +213,8 @@ public Player(World world, PlayScreen screen) {
         fdef.shape = feet;
         fdef.isSensor = true;
 
-        //b2body.createFixture(fdef).setUserData("head");
-        //b2body.createFixture(fdef).setUserData("feet");
+        b2body.createFixture(fdef).setUserData("head");
+        b2body.createFixture(fdef).setUserData("feet");
     }
     
     public void resetPlayer() 
@@ -222,12 +222,12 @@ public Player(World world, PlayScreen screen) {
             definePlayer();
         }
 
-    // public void jump() {
-    //     if (currentState !=State.JUMPING) {
-    //         b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
-    //         currentState = State.JUMPING;
-    //     }
-    //}
+    public void jump() {
+        if (currentState !=State.JUMPING) {
+            b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
+            currentState = State.JUMPING;
+        }
+    }
 
     public boolean loseLife() {
         
