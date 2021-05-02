@@ -179,27 +179,27 @@ public void update(float deltaTime) {
         game.batch.draw(region, 0, 0, TalonPlatformer.V_WIDTH, TalonPlatformer.V_HEIGHT);
         game.batch.end();
         
-        if(hud.getKeycount() == 1)
-        {
-            player.setKeys(1);
-        }
-        else if(hud.getKeycount() == 2)
-        {
-            player.setKeys(2);
-        }
-        else if(hud.getKeycount() == 3)
-        {
-            player.setKeys(3);
-        }
-        else if(hud.getKeycount() == 4)
-        {
-            player.setKeys(4);
-        }
-        else if(hud.getKeycount() == 5)
-        {
-            game.setScreen(new EndScreen(game, player));
-            dispose();
-        }
+        // if(hud.getKeycount() == 1)
+        // {
+        //     player.setKeys(1);
+        // }
+        // else if(hud.getKeycount() == 2)
+        // {
+        //     player.setKeys(2);
+        // }
+        // else if(hud.getKeycount() == 3)
+        // {
+        //     player.setKeys(3);
+        // }
+        // else if(hud.getKeycount() == 4)
+        // {
+        //     player.setKeys(4);
+        // }
+        // else if(hud.getKeycount() == 5)
+        // {
+        //     game.setScreen(new EndScreen(game, player));
+        //     dispose();
+        // }
 
         // Render our game map
         renderer.render();

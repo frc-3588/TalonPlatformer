@@ -28,7 +28,7 @@ public enum State { FALLING, JUMPING, IDLE, ROLLING, DEAD };
     private float stateTimer;
     private float timeCount;
     public boolean loseLife;
-    //public int lives = 3;
+    //public int lives = 50;
     public int lives = 1000;
     private int keyCount = 0;
     private int minX;
@@ -148,10 +148,10 @@ public Player(World world, PlayScreen screen) {
         currentState = State.DEAD;
     }
 
-    public void setKeys(int keys)
-    {
-        keyCount = keys;
-    }
+    // public void setKeys(int keys)
+    // {
+    //     keyCount = keys;
+    // }
 
     public void definePlayer() {
         BodyDef bdef = new BodyDef();

@@ -48,7 +48,7 @@ public class Hud implements Disposable{
 
             //Initilizating of the instance variables
             keyCount = 0;
-            worldTimer = 180;
+            worldTimer = 800;
             timeCount = 0;
             this.player = player;
             lives = player.lives;
