@@ -4,49 +4,43 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.Screen;
 
 //new
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.Player.State;
 
 /* Things to be done:
 End Screen
-- Loaded image for play again button - done
-- Switch to the play screen when the button is clicked (both computers and touch screens)-done
+- make end screen look niceer
+- Switch to the play screen when the button is clicked (both computers and touch screens) - bug
 */
 public class EndScreen implements Screen {
     TalonPlatformer game;
+    OrthographicCamera camera;
+    Music music;
     Player player;
-
-    float rectX = 300;
-    float rectY = 150;
-    float width = 100;
-    float height = 75;
 
     public EndScreen(TalonPlatformer game, Player player) {
         this.game = game;
         this.player = player;
 
-        //playerLost = Player.isPlayerDead();//state.get smthg
+        // playerLost = Player.isPlayerDead();//state.get smthg
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        
+        music = Gdx.audio.newMusic(Gdx.files.internal("violin_theme.mp3"));
+        music.setLooping(true);
+        music.play();
     }
-    @Override
-    public void show() 
-    {
-        //new
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean touchDown(int x, int y, int pointer, int button) {
-                int renderY = Gdx.graphics.getHeight() - y;
-                if (Vector2.dst(rectX, rectY, x, renderY) < 50) {
-                    game.setScreen(new MenuScreen(game));
-                }
-                return true;
-            }
-        });
 
+    @Override
+    public void show() {
+        
     }
 
     @Override
@@ -58,24 +52,36 @@ public class EndScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.begin();
-        //game.batch.draw(background, 0, 0);
+        game.font.draw(game.batch, "Click anywhere to RESTART", 250, 150);//this should appear inside the box
         game.batch.end();
-
-        game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        game.shapeRenderer.setColor(58, 29, 0, 1);
-        game.shapeRenderer.rect(rectX, rectY, width, height);
-        game.shapeRenderer.end();
 
         game.batch.begin();
-        if(player.getState() == State.DEAD){
-            game.font.draw(game.batch, "Game Over", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .75f);
+        // if(Player.getState() == State.DEAD){
+            //game.font.draw(game.batch, "Game Over", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
 
-        }else{
-            game.font.draw(game.batch, "You win!", Gdx.graphics.getWidth() * .25f, Gdx.graphics.getHeight() * .75f);
-
-        }
-        game.font.draw(game.batch, "Press this button to restart.", rectX, rectY);
+        // }else{
+            // game.font.draw(game.batch, "You win!", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        // }
         game.batch.end();
+
+        Gdx.input.setInputProcessor(new InputAdapter() {
+
+            @Override
+            public boolean keyDown(int keyCode) {
+            if(Gdx.input.isKeyPressed(Keys.ANY_KEY)) {
+                game.setScreen(new MenuScreen(game));
+                dispose();
+            }
+            return true;
+            }
+
+            @Override
+            public boolean touchDown (int x, int y, int pointer, int button) {
+                game.setScreen(new MenuScreen(game));
+                dispose();
+                return true;
+            }
+        });
         
     }
 
@@ -103,13 +109,13 @@ public class EndScreen implements Screen {
     @Override
     public void hide() 
     {
-
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
     public void dispose() 
     {
-        //background.dispose();
+        music.dispose();
     }
     
 }

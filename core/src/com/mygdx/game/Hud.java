@@ -63,7 +63,7 @@ public class Hud implements Disposable{
             countdownLabel = new Label(String.format("%03d", worldTimer), new LabelStyle(new BitmapFont(), Color.WHITE));
             keycountLabel = new Label(String.format("%01d", keyCount), new LabelStyle(new BitmapFont(), Color.WHITE));
             livecountLabel = new Label(String.format("%01d", lives), new LabelStyle(new BitmapFont(), Color.WHITE));
-            
+
             //Table that is used to display the labels
             table.add(keyLabel).expandX().padTop(10);
             table.add(livesLabel).expandX().padTop(10);
@@ -98,7 +98,8 @@ public class Hud implements Disposable{
             }
             
         //It is saying if the physics body of the player is at this position, you add 1 to the keyCount if the keyCount is less than 1.
-        if(player.b2body.getPosition().x >= 25.2 && player.b2body.getPosition().y >= 1.5)
+        //Level One
+         if(player.b2body.getPosition().x >= 25.2 && player.b2body.getPosition().x <= 25.4 && player.b2body.getPosition().y >= 1.5 && player.b2body.getPosition().y <= 1.7)
         {
                     if(keyCount <= 0)
                     {
@@ -106,14 +107,43 @@ public class Hud implements Disposable{
                     }
                     keycountLabel.setText(String.format("%01d", keyCount));
         }
-        // if(player.b2body.getPosition().x >= 25.2 && player.b2body.getPosition().y >= 1.5)
-        // {
-        //             if(keyCount <= 0)
-        //             {
-        //                     keyCount ++;
-        //             }
-        //             keycountLabel.setText(String.format("%01d", keyCount));
-        // }
+        //Level Two
+        if(player.b2body.getPosition().x >= 25.28 && player.b2body.getPosition().y <= 0.4)
+        {
+                    if(keyCount <= 2 && keyCount == 1)
+                    {
+                            keyCount ++;
+                    }
+                    keycountLabel.setText(String.format("%01d", keyCount));
+        }
+        // Level Three
+        if(player.b2body.getPosition().x >= 24.9 && player.b2body.getPosition().y <= 0.9)
+        {
+                    if(keyCount <= 3 && keyCount == 2)
+                    {
+                            keyCount ++;
+                    }
+                    keycountLabel.setText(String.format("%01d", keyCount));
+        }
+        // Level Four
+        if(player.b2body.getPosition().x >= 25.2 && player.b2body.getPosition().y <= 1.7)
+        {
+                    if(keyCount <= 4 && keyCount == 3)
+                    {
+                            keyCount ++;
+                    }
+                    keycountLabel.setText(String.format("%01d", keyCount));
+        }
+        // Level Five
+        if(player.b2body.getPosition().x >= 25.3 && player.b2body.getPosition().y <= 0.4)
+        {
+                    if(keyCount <= 5 && keyCount == 4)
+                    {
+                            keyCount ++;
+                    }
+                    keycountLabel.setText(String.format("%01d", keyCount));
+        }
+
         if(player.getState() == State.DEAD)
         {
                         lives = 0;
@@ -125,6 +155,11 @@ public class Hud implements Disposable{
         {
                         player.setState();
         }            
+    }
+    
+    public int getKeycount()
+    {
+        return keyCount;
     }
     
     public float getTime() 

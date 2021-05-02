@@ -43,7 +43,7 @@ public class PlayScreen implements Screen{
 
     // Tiled map variables
     private TmxMapLoader maploader;
-    public TiledMap map;
+    private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
 
     // Box2d variables
@@ -81,7 +81,7 @@ public class PlayScreen implements Screen{
 
          // Load our map and setup our map renderer
          maploader = new TmxMapLoader();
-         map = maploader.load("LevelOne.tmx");
+         map = maploader.load("GameMap.tmx");
          renderer = new OrthogonalTiledMapRenderer(map, 1 / TalonPlatformer.PPM);
 
          // Initially set our gamecam to be centered corretly at the start of the game
@@ -122,9 +122,14 @@ public class PlayScreen implements Screen{
         // if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.b2body.getLinearVelocity().y == 0) {
         //     player.b2body.applyForceToCenter(0, 150, true);
         // }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            player.jump();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) 
+        { 
+            player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true); 
         }
+
+        // if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+        //     player.jump();
+        // }
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2) {
             player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
@@ -173,6 +178,28 @@ public void update(float deltaTime) {
         game.batch.begin();
         game.batch.draw(region, 0, 0, TalonPlatformer.V_WIDTH, TalonPlatformer.V_HEIGHT);
         game.batch.end();
+        
+        if(hud.getKeycount() == 1)
+        {
+            player.setKeys(1);
+        }
+        else if(hud.getKeycount() == 2)
+        {
+            player.setKeys(2);
+        }
+        else if(hud.getKeycount() == 3)
+        {
+            player.setKeys(3);
+        }
+        else if(hud.getKeycount() == 4)
+        {
+            player.setKeys(4);
+        }
+        else if(hud.getKeycount() == 5)
+        {
+            game.setScreen(new EndScreen(game, player));
+            dispose();
+        }
 
         // Render our game map
         renderer.render();
@@ -192,6 +219,7 @@ public void update(float deltaTime) {
         if(player.getState() == State.DEAD)
         {
             game.setScreen(new EndScreen(game, player));
+            dispose();
         }
     }
 
@@ -231,8 +259,7 @@ public void update(float deltaTime) {
         world.dispose();
         b2dr.dispose();
         hud.dispose();
-        this.dispose();
-
+        music.dispose();
     }
 
     public static Player getPlayer()
