@@ -28,8 +28,8 @@ public enum State { FALLING, JUMPING, IDLE, ROLLING, DEAD };
     private float stateTimer;
     private float timeCount;
     public boolean loseLife;
-    //public int lives = 50;
-    public int lives = 1000;
+    public int lives = 50;
+//    public int lives = 3;
     private int keyCount = 0;
     private int minX;
     private int minY;
@@ -79,7 +79,6 @@ public Player(World world, PlayScreen screen) {
                 PlayScreen.setContact(false);
                 lives --;
                 resetPlayer();
-                System.out.println(lives);
             }
         }
 
@@ -235,7 +234,7 @@ public Player(World world, PlayScreen screen) {
             return true;
         }
 
-        if (b2body.getPosition().y > maxY || b2body.getPosition().y < minY) {
+        if (b2body.getPosition().y < minY) {
             return true;
         }
 

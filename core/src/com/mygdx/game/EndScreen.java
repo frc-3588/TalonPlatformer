@@ -23,12 +23,11 @@ public class EndScreen implements Screen {
     TalonPlatformer game;
     OrthographicCamera camera;
     Music music;
-    Player player;
+    boolean playWins;
 
-    public EndScreen(TalonPlatformer game, Player player) {
+    public EndScreen(TalonPlatformer game, boolean playWins) {
         this.game = game;
-        this.player = player;
-
+        this.playWins = playWins;
         // playerLost = Player.isPlayerDead();//state.get smthg
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -52,17 +51,19 @@ public class EndScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Click anywhere to RESTART", 250, 150);//this should appear inside the box
+        game.font.draw(game.batch, "Click anywhere to RESTART", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);//this should appear inside the box
         game.batch.end();
 
         game.batch.begin();
-        // if(Player.getState() == State.DEAD){
-            //game.font.draw(game.batch, "Game Over", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+         if(playWins){
+             game.font.draw(game.batch, "You win!", Gdx.graphics.getWidth() / 2, (Gdx.graphics.getHeight() / 2) + 20);
 
-        // }else{
-            // game.font.draw(game.batch, "You win!", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        // }
+         }else{
+             game.font.draw(game.batch, "Game Over", Gdx.graphics.getWidth() / 2, (Gdx.graphics.getHeight() / 2) + 20);
+         }
         game.batch.end();
+
+         game.batch.setProjectionMatrix(camera.combined);
 
         Gdx.input.setInputProcessor(new InputAdapter() {
 
@@ -70,7 +71,7 @@ public class EndScreen implements Screen {
             public boolean keyDown(int keyCode) {
             if(Gdx.input.isKeyPressed(Keys.ANY_KEY)) {
                 game.setScreen(new MenuScreen(game));
-                dispose();
+                music.stop();
             }
             return true;
             }
@@ -78,7 +79,7 @@ public class EndScreen implements Screen {
             @Override
             public boolean touchDown (int x, int y, int pointer, int button) {
                 game.setScreen(new MenuScreen(game));
-                dispose();
+                music.stop();
                 return true;
             }
         });

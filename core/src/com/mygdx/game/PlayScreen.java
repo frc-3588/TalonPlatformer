@@ -48,7 +48,7 @@ public class PlayScreen implements Screen{
 
     // Box2d variables
     public World world;
-    private Box2DDebugRenderer b2dr;
+    // private Box2DDebugRenderer b2dr;
 
     // Player sprite
     private Player player;
@@ -56,7 +56,7 @@ public class PlayScreen implements Screen{
     private static Player thePlayer;
     private static boolean isTouch;
 
-    private Enemies enemies;
+//    private Enemies enemies;
 
     public PlayScreen(TalonPlatformer game) {
         // CHANGE TO PNG WITH ALL THE SPRITES 
@@ -91,7 +91,7 @@ public class PlayScreen implements Screen{
          world = new World(new Vector2(0, -10), true);
 
          // Allows for debug lines of our box2d world
-         b2dr = new Box2DDebugRenderer();
+        //  b2dr = new Box2DDebugRenderer();
 
          new B2WorldCreator(world, map);
 
@@ -131,6 +131,18 @@ public class PlayScreen implements Screen{
             player.jump();
         }
 
+        // SCREEN INPUT RIGHT
+        if(Gdx.input.isTouched() && Gdx.input.getX() > ((Gdx.graphics.getWidth() / 4) / TalonPlatformer.PPM) && player.b2body.getLinearVelocity().x <= 2)
+        {
+            player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+        }
+
+        // SCREEN INPUT RIGHT
+        if((Gdx.input.isTouched() && Gdx.input.getX() < ((Gdx.graphics.getWidth() / 4)) / TalonPlatformer.PPM))
+        {
+            player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+        }
+
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2) {
             player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
         }
@@ -138,6 +150,7 @@ public class PlayScreen implements Screen{
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2) {
             player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
         }
+
     }
 public void update(float deltaTime) {
         handleInput(deltaTime);
@@ -179,6 +192,12 @@ public void update(float deltaTime) {
         game.batch.draw(region, 0, 0, TalonPlatformer.V_WIDTH, TalonPlatformer.V_HEIGHT);
         game.batch.end();
 
+//        if(hud.getKeycount() == 0)
+//        {
+//            music.stop();
+//            game.setScreen(new EndScreen(game, true));
+//        }
+//
         if(hud.getKeycount() == 1)
         {
             player.setKeys(1);
@@ -197,15 +216,15 @@ public void update(float deltaTime) {
         }
         else if(hud.getKeycount() == 5)
         {
-            game.setScreen(new EndScreen(game, player));
             music.stop();
+            game.setScreen(new EndScreen(game, true));
         }
 
         // Render our game map
         renderer.render();
 
         // Render our Box2DDebugLines
-        b2dr.render(world, gamecam.combined);
+        // b2dr.render(world, gamecam.combined);
 
         // Set our batch to now draw what the Hud camera sees
         game.batch.setProjectionMatrix(gamecam.combined);
@@ -218,8 +237,8 @@ public void update(float deltaTime) {
 
         if(player.getState() == State.DEAD)
         {
-            game.setScreen(new EndScreen(game, player));
             music.stop();
+            game.setScreen(new EndScreen(game, false));
         }
     }
 
@@ -257,7 +276,7 @@ public void update(float deltaTime) {
         map.dispose();
         renderer.dispose();
         world.dispose();
-        b2dr.dispose();
+        // b2dr.dispose();
         hud.dispose();
         music.dispose();
     }
