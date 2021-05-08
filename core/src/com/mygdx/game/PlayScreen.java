@@ -63,7 +63,7 @@ public class PlayScreen implements Screen{
         atlas = new TextureAtlas("Player_and_Enemies.pack");
         region = new TextureRegion(new Texture("platformerFlat.jpg"));
         
-        music = Gdx.audio.newMusic(Gdx.files.internal("happy_level_theme_Test_1.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("clockwork_chamber_full.mp3"));
         music.setLooping(true);
         music.play();
 

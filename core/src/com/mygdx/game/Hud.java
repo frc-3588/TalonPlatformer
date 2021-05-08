@@ -8,6 +8,10 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Player.State;
+
+import java.text.MessageFormat;
+import java.text.NumberFormat;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -60,10 +64,11 @@ public class Hud implements Disposable{
             
             /*These labels are special, they are able to format the string into any digit integer.
             For example, 3 digits would be 001 for keycount as an example. */
-            countdownLabel = new Label(String.format("%03d", worldTimer), new LabelStyle(new BitmapFont(), Color.WHITE));
-            keycountLabel = new Label(String.format("%01d", keyCount), new LabelStyle(new BitmapFont(), Color.WHITE));
-            livecountLabel = new Label(String.format("%01d", lives), new LabelStyle(new BitmapFont(), Color.WHITE));
-
+            
+            countdownLabel = new Label(Integer.toString(worldTimer), new LabelStyle(new BitmapFont(), Color.WHITE));
+            keycountLabel = new Label(Integer.toString(keyCount), new LabelStyle(new BitmapFont(), Color.WHITE));
+            livecountLabel = new Label(Integer.toString(lives), new LabelStyle(new BitmapFont(), Color.WHITE));
+            
             //Table that is used to display the labels
             table.add(keyLabel).expandX().padTop(10);
             table.add(livesLabel).expandX().padTop(10);
@@ -77,6 +82,7 @@ public class Hud implements Disposable{
 
     
     }
+
     public void update(float deltaTime, int liveCount, boolean playerLostALife, boolean playerIsDead)
     {
             /* This is for the timer, it is basically taking worldTimer, which is set to 300 and saying that if timeCount, 
@@ -86,7 +92,7 @@ public class Hud implements Disposable{
             if(timeCount >= 1)
             {
                 worldTimer --;
-                countdownLabel.setText(String.format("%03d", worldTimer));
+                countdownLabel.setText(Integer.toString(worldTimer));
                 timeCount = 0;    
             }
             
@@ -94,7 +100,7 @@ public class Hud implements Disposable{
             if(worldTimer < 1)
             {
                 worldTimer = 0;
-                countdownLabel.setText(String.format("%03d", worldTimer));
+                countdownLabel.setText(Integer.toString(worldTimer));
             }
             
         //It is saying if the physics body of the player is at this position, you add 1 to the keyCount if the keyCount is less than 1.
@@ -130,14 +136,14 @@ public class Hud implements Disposable{
             keyCount++;
         }
 
-        keycountLabel.setText(String.format("%01d", keyCount));
+        keycountLabel.setText(Integer.toString(keyCount));
         
         if(player.getState() == State.DEAD)
         {
                         lives = 0;
         }
                         lives = player.getLives();
-                        livecountLabel.setText(String.format("%01d", lives));
+                        livecountLabel.setText(Integer.toString(lives));
 
         if(worldTimer == 0)
         {
