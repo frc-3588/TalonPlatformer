@@ -20,16 +20,16 @@ public class TalonPlatformer extends Game {
     public static final int V_WIDTH = 400;
     public static final int V_HEIGHT = 208;
     public static final float PPM = 100;
-    public static AssetManager manager;
+    // public static AssetManager manager;
 
     @Override
     public void create () {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-        manager = new AssetManager();
-        manager.load("8bit_trial_and_demo.mp3", Music.class);
-        manager.load("clockwork_chamber_demo.mp3", Music.class);
-        manager.finishLoading();
+        // manager = new AssetManager();
+        // manager.load("8bit_trial_and_demo.mp3", Music.class);
+        // manager.load("clockwork_chamber_demo.mp3", Music.class);
+        // manager.finishLoading();
         font = new BitmapFont();
         setScreen(new MenuScreen(this));
         //setScreen(new PlayScreen(this));

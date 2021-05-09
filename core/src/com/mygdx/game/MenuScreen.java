@@ -10,11 +10,14 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class MenuScreen implements Screen 
 {
     TalonPlatformer game;
     Texture background;
+    Viewport gamePort;
     OrthographicCamera camera;
     Music music;
 
@@ -22,13 +25,17 @@ public class MenuScreen implements Screen
     {
         this.game = game;
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        background = new Texture(Gdx.files.internal("Menu.jpg"));
-
-        music = Gdx.audio.newMusic(Gdx.files.internal("clockwork_chamber_demo.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("happy_level_theme_Test_1.mp3"));
         music.setLooping(true);
         music.play();
+
+        camera = new OrthographicCamera();
+//        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        gamePort = new FitViewport(TalonPlatformer.V_WIDTH / TalonPlatformer.PPM, TalonPlatformer.V_HEIGHT / TalonPlatformer.PPM, camera);
+        camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+
+        background = new Texture(Gdx.files.internal("Menu.jpg"));
+
     }
 
     @Override
@@ -43,12 +50,12 @@ public class MenuScreen implements Screen
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        game.batch.begin();
+        game.batch.draw(background, 0, 0, TalonPlatformer.V_WIDTH / TalonPlatformer.PPM, TalonPlatformer.V_HEIGHT / TalonPlatformer.PPM);
+        game.batch.end();
+
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
-
-        game.batch.begin();
-        game.batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        game.batch.end();
 
         Gdx.input.setInputProcessor(new InputAdapter() {
 
@@ -56,7 +63,7 @@ public class MenuScreen implements Screen
             public boolean keyDown(int keyCode) {
             if(Gdx.input.isKeyPressed(Keys.ANY_KEY)) {
                 game.setScreen(new PlayScreen(game));
-                dispose();
+                music.stop();
             }
             return true;
             }
@@ -64,7 +71,7 @@ public class MenuScreen implements Screen
             @Override
             public boolean touchDown (int x, int y, int pointer, int button) {
                 game.setScreen(new PlayScreen(game));
-                dispose();
+                music.stop();
                 return true;
             }
         });
@@ -73,7 +80,7 @@ public class MenuScreen implements Screen
     @Override
     public void resize(int width, int height) 
     {
-
+        gamePort.update(width, height);
     }
 
     @Override

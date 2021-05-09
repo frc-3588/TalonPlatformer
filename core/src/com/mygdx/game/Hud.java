@@ -8,6 +8,10 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Player.State;
+
+import java.text.MessageFormat;
+import java.text.NumberFormat;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -60,10 +64,11 @@ public class Hud implements Disposable{
             
             /*These labels are special, they are able to format the string into any digit integer.
             For example, 3 digits would be 001 for keycount as an example. */
-            countdownLabel = new Label(String.format("%03d", worldTimer), new LabelStyle(new BitmapFont(), Color.WHITE));
-            keycountLabel = new Label(String.format("%01d", keyCount), new LabelStyle(new BitmapFont(), Color.WHITE));
-            livecountLabel = new Label(String.format("%01d", lives), new LabelStyle(new BitmapFont(), Color.WHITE));
-
+            
+            countdownLabel = new Label(Integer.toString(worldTimer), new LabelStyle(new BitmapFont(), Color.WHITE));
+            keycountLabel = new Label(Integer.toString(keyCount), new LabelStyle(new BitmapFont(), Color.WHITE));
+            livecountLabel = new Label(Integer.toString(lives), new LabelStyle(new BitmapFont(), Color.WHITE));
+            
             //Table that is used to display the labels
             table.add(keyLabel).expandX().padTop(10);
             table.add(livesLabel).expandX().padTop(10);
@@ -77,6 +82,7 @@ public class Hud implements Disposable{
 
     
     }
+
     public void update(float deltaTime, int liveCount, boolean playerLostALife, boolean playerIsDead)
     {
             /* This is for the timer, it is basically taking worldTimer, which is set to 300 and saying that if timeCount, 
@@ -86,7 +92,7 @@ public class Hud implements Disposable{
             if(timeCount >= 1)
             {
                 worldTimer --;
-                countdownLabel.setText(String.format("%03d", worldTimer));
+                countdownLabel.setText(Integer.toString(worldTimer));
                 timeCount = 0;    
             }
             
@@ -94,62 +100,50 @@ public class Hud implements Disposable{
             if(worldTimer < 1)
             {
                 worldTimer = 0;
-                countdownLabel.setText(String.format("%03d", worldTimer));
+                countdownLabel.setText(Integer.toString(worldTimer));
             }
             
         //It is saying if the physics body of the player is at this position, you add 1 to the keyCount if the keyCount is less than 1.
         //Level One
-         if(player.b2body.getPosition().x >= 25.2 && player.b2body.getPosition().x <= 25.4 && player.b2body.getPosition().y >= 1.5 && player.b2body.getPosition().y <= 1.7)
+        if(player.b2body.getPosition().x >= 25.2 && player.b2body.getPosition().x <= 25.4 
+         && player.b2body.getPosition().y >= 1.5 && player.b2body.getPosition().y <= 1.7 && keyCount == 0)
         {
-                    if(keyCount <= 0)
-                    {
-                            keyCount ++;
-                    }
-                    keycountLabel.setText(String.format("%01d", keyCount));
+            keyCount ++;
         }
         //Level Two
-        if(player.b2body.getPosition().x >= 25.28 && player.b2body.getPosition().y <= 0.4)
+        else if(player.b2body.getPosition().x >= 50.8 && player.b2body.getPosition().x <= 50.96 
+        && player.b2body.getPosition().y >= 0.3837 && player.b2body.getPosition().y <= 0.5437 && keyCount == 1)
         {
-                    if(keyCount <= 2 && keyCount == 1)
-                    {
-                            keyCount ++;
-                    }
-                    keycountLabel.setText(String.format("%01d", keyCount));
+            keyCount++;
         }
-        // Level Three
-        if(player.b2body.getPosition().x >= 24.9 && player.b2body.getPosition().y <= 0.9)
+        // // Level Three
+        else if(player.b2body.getPosition().x >= 76.16 && player.b2body.getPosition().x <= 76.32 
+        && player.b2body.getPosition().y >= 0.8662 && player.b2body.getPosition().y <= 1.0262 && keyCount == 2)
         {
-                    if(keyCount <= 3 && keyCount == 2)
-                    {
-                            keyCount ++;
-                    }
-                    keycountLabel.setText(String.format("%01d", keyCount));
+            keyCount++;
         }
-        // Level Four
-        if(player.b2body.getPosition().x >= 25.2 && player.b2body.getPosition().y <= 1.7)
+        // // Level Four
+        else if(player.b2body.getPosition().x >= 102.08 && player.b2body.getPosition().x <= 102.24 
+        && player.b2body.getPosition().y >= 1.6697 && player.b2body.getPosition().y <= 1.8297 && keyCount == 3)
         {
-                    if(keyCount <= 4 && keyCount == 3)
-                    {
-                            keyCount ++;
-                    }
-                    keycountLabel.setText(String.format("%01d", keyCount));
+
+            keyCount++;
         }
-        // Level Five
-        if(player.b2body.getPosition().x >= 25.3 && player.b2body.getPosition().y <= 0.4)
+        // // Level Five
+        else if(player.b2body.getPosition().x >= 127.84 && player.b2body.getPosition().x <= 128 
+        && player.b2body.getPosition().y >= 0.3824 && player.b2body.getPosition().y <= 0.5424 && keyCount == 4)
         {
-                    if(keyCount <= 5 && keyCount == 4)
-                    {
-                            keyCount ++;
-                    }
-                    keycountLabel.setText(String.format("%01d", keyCount));
+            keyCount++;
         }
 
+        keycountLabel.setText(Integer.toString(keyCount));
+        
         if(player.getState() == State.DEAD)
         {
                         lives = 0;
         }
                         lives = player.getLives();
-                        livecountLabel.setText(String.format("%01d", lives));
+                        livecountLabel.setText(Integer.toString(lives));
 
         if(worldTimer == 0)
         {

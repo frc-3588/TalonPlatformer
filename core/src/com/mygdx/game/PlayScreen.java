@@ -34,6 +34,7 @@ public class PlayScreen implements Screen{
     private TextureAtlas atlas;
     private TextureRegion region;
     private Music music;
+    private float volume;
 
 
     // Texture texture;
@@ -48,7 +49,7 @@ public class PlayScreen implements Screen{
 
     // Box2d variables
     public World world;
-    private Box2DDebugRenderer b2dr;
+    // private Box2DDebugRenderer b2dr;
 
     // Player sprite
     private Player player;
@@ -56,14 +57,15 @@ public class PlayScreen implements Screen{
     private static Player thePlayer;
     private static boolean isTouch;
 
-    private Enemies enemies;
+//    private Enemies enemies;
 
     public PlayScreen(TalonPlatformer game) {
         // CHANGE TO PNG WITH ALL THE SPRITES 
         atlas = new TextureAtlas("Player_and_Enemies.pack");
         region = new TextureRegion(new Texture("platformerFlat.jpg"));
         
-        music = Gdx.audio.newMusic(Gdx.files.internal("happy_level_theme_Test_1.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("clockwork_chamber_full.mp3"));
+        music.setVolume((float) 0.25);
         music.setLooping(true);
         music.play();
 
@@ -91,7 +93,7 @@ public class PlayScreen implements Screen{
          world = new World(new Vector2(0, -10), true);
 
          // Allows for debug lines of our box2d world
-         b2dr = new Box2DDebugRenderer();
+        //  b2dr = new Box2DDebugRenderer();
 
          new B2WorldCreator(world, map);
 
@@ -122,14 +124,26 @@ public class PlayScreen implements Screen{
         // if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && player.b2body.getLinearVelocity().y == 0) {
         //     player.b2body.applyForceToCenter(0, 150, true);
         // }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) 
-        { 
-            player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true); 
+        // if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) 
+        // { 
+        //     player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true); 
+        // }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            player.jump();
         }
 
-        // if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-        //     player.jump();
-        // }
+        // SCREEN INPUT RIGHT
+        if(Gdx.input.isTouched() && Gdx.input.getX() > ((Gdx.graphics.getWidth() / 4) / TalonPlatformer.PPM) && player.b2body.getLinearVelocity().x <= 2)
+        {
+            player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+        }
+
+        // SCREEN INPUT RIGHT
+        if((Gdx.input.isTouched() && Gdx.input.getX() < ((Gdx.graphics.getWidth() / 4)) / TalonPlatformer.PPM))
+        {
+            player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+        }
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2) {
             player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
@@ -138,6 +152,7 @@ public class PlayScreen implements Screen{
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2) {
             player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
         }
+
     }
 public void update(float deltaTime) {
         handleInput(deltaTime);
@@ -178,34 +193,40 @@ public void update(float deltaTime) {
         game.batch.begin();
         game.batch.draw(region, 0, 0, TalonPlatformer.V_WIDTH, TalonPlatformer.V_HEIGHT);
         game.batch.end();
-        
-        // if(hud.getKeycount() == 1)
-        // {
-        //     player.setKeys(1);
-        // }
-        // else if(hud.getKeycount() == 2)
-        // {
-        //     player.setKeys(2);
-        // }
-        // else if(hud.getKeycount() == 3)
-        // {
-        //     player.setKeys(3);
-        // }
-        // else if(hud.getKeycount() == 4)
-        // {
-        //     player.setKeys(4);
-        // }
-        // else if(hud.getKeycount() == 5)
-        // {
-        //     game.setScreen(new EndScreen(game, player));
-        //     dispose();
-        // }
+
+//        if(hud.getKeycount() == 0)
+//        {
+//            music.stop();
+//            game.setScreen(new EndScreen(game, true));
+//        }
+//
+        if(hud.getKeycount() == 1)
+        {
+            player.setKeys(1);
+        }
+        else if(hud.getKeycount() == 2)
+        {
+            player.setKeys(2);
+        }
+        else if(hud.getKeycount() == 3)
+        {
+            player.setKeys(3);
+        }
+        else if(hud.getKeycount() == 4)
+        {
+            player.setKeys(4);
+        }
+        else if(hud.getKeycount() == 5)
+        {
+            music.stop();
+            game.setScreen(new EndScreen(game, true));
+        }
 
         // Render our game map
         renderer.render();
 
         // Render our Box2DDebugLines
-        b2dr.render(world, gamecam.combined);
+        // b2dr.render(world, gamecam.combined);
 
         // Set our batch to now draw what the Hud camera sees
         game.batch.setProjectionMatrix(gamecam.combined);
@@ -218,8 +239,8 @@ public void update(float deltaTime) {
 
         if(player.getState() == State.DEAD)
         {
-            game.setScreen(new EndScreen(game, player));
-            dispose();
+            music.stop();
+            game.setScreen(new EndScreen(game, false));
         }
     }
 
@@ -257,7 +278,7 @@ public void update(float deltaTime) {
         map.dispose();
         renderer.dispose();
         world.dispose();
-        b2dr.dispose();
+        // b2dr.dispose();
         hud.dispose();
         music.dispose();
     }
