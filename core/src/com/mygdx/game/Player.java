@@ -175,7 +175,7 @@ public Player(World world, PlayScreen screen) {
             bdef.position.set(7616 / TalonPlatformer.PPM, 80 / TalonPlatformer.PPM);
         }
         // // //This the fifth level cuz
-        if(keyCount == 4)
+        else if(keyCount == 4)
         {
             bdef.position.set(10208 / TalonPlatformer.PPM, 160 / TalonPlatformer.PPM);
         }
