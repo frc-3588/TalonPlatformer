@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class Player extends Sprite
 {
-public enum State { FALLING, JUMPING, IDLE, ROLLING, DEAD };
+    public enum State { FALLING, JUMPING, IDLE, ROLLING, DEAD };
     public State currentState;
     public State previousState;
     public World world;
@@ -37,7 +37,8 @@ public enum State { FALLING, JUMPING, IDLE, ROLLING, DEAD };
     private int maxY;
     private PlayScreen screen;
 
-public Player(World world, PlayScreen screen) {
+    public Player(World world, PlayScreen screen) 
+    {
         super(screen.getAtlas().findRegion("Player"));
         this.screen = screen;
         this.world = world;
@@ -70,23 +71,26 @@ public Player(World world, PlayScreen screen) {
 
     }
 
-    public void update(float dt) {
+    public void update(float dt)
+    {
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(getFrame(dt));
         
         if(loseLife() || PlayScreen.getContact())
-            {
-                PlayScreen.setContact(false);
-                lives --;
-                resetPlayer();
-            }
+        {
+            PlayScreen.setContact(false);
+            lives --;
+            resetPlayer();
         }
+    }
 
-    public TextureRegion getFrame(float dt) {
+    public TextureRegion getFrame(float dt)
+    {
         currentState = getState();
 
         TextureRegion region;
-        switch(currentState) {
+        switch(currentState) 
+        {
             case JUMPING:
                 region = playerJump.getKeyFrame(stateTimer);
                 break;
@@ -100,44 +104,53 @@ public Player(World world, PlayScreen screen) {
                 break;
         }
 
-        if ((b2body.getLinearVelocity().x < 0 || !rollingRight) && !region.isFlipX()) {
+        if ((b2body.getLinearVelocity().x < 0 || !rollingRight) && !region.isFlipX()) 
+        {
             region.flip(true, false);
             rollingRight = false;
         }
 
-        else if ((b2body.getLinearVelocity().x > 0 || !rollingRight) && region.isFlipX()) {
+        else if ((b2body.getLinearVelocity().x > 0 || !rollingRight) && region.isFlipX())
+        {
             region.flip(true, false);
             rollingRight = true;
         }
+
         stateTimer = currentState == previousState ? stateTimer + dt : 0;
         previousState = currentState;
         return region;
     }
 
-    public State getState() {
+    public State getState()
+    {
         if(currentState == State.DEAD)
         {
             return State.DEAD;
         }
         
-        if(lives == 0) {
+        if(lives == 0) 
+        {
             return State.DEAD;
         }
         
-        if (b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING)) {
+        if (b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING)) 
+        {
             return State.JUMPING;
         }
 
-        if (b2body.getLinearVelocity().y < 0) {
+        if (b2body.getLinearVelocity().y < 0) 
+        {
             return State.FALLING;
         }
 
-        else if (b2body.getLinearVelocity().x != 0) {
+        else if (b2body.getLinearVelocity().x != 0) 
+        {
             return State.ROLLING;
         }
         
 
-        else {
+        else 
+        {
             return State.IDLE;
         }
     }
@@ -152,24 +165,25 @@ public Player(World world, PlayScreen screen) {
         keyCount = keys;
     }
 
-    public void definePlayer() {
+    public void definePlayer() 
+    {
         BodyDef bdef = new BodyDef();
         //This the OG cuz
         if(keyCount == 0)
         {
             bdef.position.set(32 / TalonPlatformer.PPM, 32 / TalonPlatformer.PPM);
         }
-        // //This the second level cuz
+        // // //This the second level cuz
         else if(keyCount == 1)
         {
             bdef.position.set(2512 / TalonPlatformer.PPM, 165 / TalonPlatformer.PPM);
         }
-        // //This the third level cuz
+        // // //This the third level cuz
         else if(keyCount == 2)
         {
             bdef.position.set(5088 / TalonPlatformer.PPM, 40 / TalonPlatformer.PPM);
         }
-        //This the fourth level cuz
+        // //This the fourth level cuz
         else if(keyCount == 3)
         {
             bdef.position.set(7616 / TalonPlatformer.PPM, 80 / TalonPlatformer.PPM);
@@ -217,31 +231,38 @@ public Player(World world, PlayScreen screen) {
     }
     
     public void resetPlayer() 
-        {
-            definePlayer();
-        }
+    {
+        definePlayer();
+    }
 
-    public void jump() {
-        if (currentState !=State.JUMPING) {
+    public void jump() 
+    {
+        if (currentState !=State.JUMPING) 
+        {
             b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
             currentState = State.JUMPING;
         }
     }
 
-    public boolean loseLife() {
+    public boolean loseLife() 
+    {
         
-        if (b2body.getPosition().x > maxX || b2body.getPosition().x < minX) {
+        if (b2body.getPosition().x > maxX || b2body.getPosition().x < minX) 
+        {
             return true;
         }
 
-        if (b2body.getPosition().y < minY) {
+        if (b2body.getPosition().y < minY) 
+        {
             return true;
         }
 
-        else {
+        else 
+        {
             return false;
         }
     }
+    
     public int getLives()
     {
         return lives;

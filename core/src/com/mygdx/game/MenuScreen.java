@@ -15,11 +15,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class MenuScreen implements Screen 
 {
-    TalonPlatformer game;
-    Texture background;
-    Viewport gamePort;
-    OrthographicCamera camera;
-    Music music;
+    private TalonPlatformer game;
+    private Texture background;
+    private Viewport gamePort;
+    private OrthographicCamera camera;
+    private Music music;
 
     public MenuScreen(TalonPlatformer game)
     {
@@ -30,7 +30,6 @@ public class MenuScreen implements Screen
         music.play();
 
         camera = new OrthographicCamera();
-//        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         gamePort = new FitViewport(TalonPlatformer.V_WIDTH / TalonPlatformer.PPM, TalonPlatformer.V_HEIGHT / TalonPlatformer.PPM, camera);
         camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
@@ -39,7 +38,8 @@ public class MenuScreen implements Screen
     }
 
     @Override
-    public void show() {
+    public void show() 
+    {
 
     }
     

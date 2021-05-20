@@ -1,52 +1,54 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
-//new
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-
-/* Things to be done:
-End Screen
-- make end screen look niceer
-- Switch to the play screen when the button is clicked (both computers and touch screens) - bug
-*/
-public class EndScreen implements Screen {
-    TalonPlatformer game;
-    OrthographicCamera camera;
-    Music music;
-    boolean playWins;
+public class EndScreen implements Screen 
+{
+    private TalonPlatformer game;
+    private OrthographicCamera camera;
+    private Viewport gamePort;
+    private Music music;
+    private boolean playWins;
 
     public EndScreen(TalonPlatformer game, boolean playWins) {
         this.game = game;
         this.playWins = playWins;
-        // playerLost = Player.isPlayerDead();//state.get smthg
+
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        
-        music = Gdx.audio.newMusic(Gdx.files.internal("violin_theme.mp3"));
+        // camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        gamePort = new FitViewport(TalonPlatformer.V_WIDTH / TalonPlatformer.PPM, TalonPlatformer.V_HEIGHT / TalonPlatformer.PPM, camera);
+        camera.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+
+        if(playWins)
+        {
+            music = Gdx.audio.newMusic(Gdx.files.internal("victory_GANG_test_1.mp3"));
+        }
+        else
+        {
+            music = Gdx.audio.newMusic(Gdx.files.internal("violin_theme.mp3"));
+        }
+
         music.setLooping(true);
         music.play();
     }
 
     @Override
-    public void show() {
+    public void show() 
+    {
         
     }
 
     @Override
     public void render(float delta) 
     {
-        //4.24.2021 new code
-
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -55,18 +57,21 @@ public class EndScreen implements Screen {
         game.batch.end();
 
         game.batch.begin();
-         if(playWins){
-             game.font.draw(game.batch, "You win!", Gdx.graphics.getWidth() / 2, (Gdx.graphics.getHeight() / 2) + 20);
-
-         }else{
-             game.font.draw(game.batch, "Game Over", Gdx.graphics.getWidth() / 2, (Gdx.graphics.getHeight() / 2) + 20);
-         }
+        if(playWins)
+        {
+            game.font.draw(game.batch, "You win!", Gdx.graphics.getWidth() / 2, (Gdx.graphics.getHeight() / 2) + 20);
+        }
+        else
+        {
+            game.font.draw(game.batch, "Game Over", Gdx.graphics.getWidth() / 2, (Gdx.graphics.getHeight() / 2) + 20);
+        }
         game.batch.end();
 
-         game.batch.setProjectionMatrix(camera.combined);
+        camera.update();
+        game.batch.setProjectionMatrix(camera.combined);
 
-        Gdx.input.setInputProcessor(new InputAdapter() {
-
+        Gdx.input.setInputProcessor(new InputAdapter() 
+        {
             @Override
             public boolean keyDown(int keyCode) {
             if(Gdx.input.isKeyPressed(Keys.ANY_KEY)) {
@@ -89,8 +94,7 @@ public class EndScreen implements Screen {
     @Override
     public void resize(int width, int height) 
     {
-    
-
+        gamePort.update(width, height);
     }
 
     @Override

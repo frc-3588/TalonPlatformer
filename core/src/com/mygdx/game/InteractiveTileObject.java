@@ -10,7 +10,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public abstract class InteractiveTileObject {
+public abstract class InteractiveTileObject 
+{
     protected World world;
     protected TiledMap map;
     protected TiledMapTile tile;
