@@ -80,6 +80,7 @@ public class Player extends Sprite
         {
             PlayScreen.setContact(false);
             lives --;
+            die();
             resetPlayer();
         }
     }
@@ -207,29 +208,37 @@ public class Player extends Sprite
         CircleShape shape = new CircleShape();
         
 
-        shape.setRadius(6 / TalonPlatformer.PPM);
+        shape.setRadius(5 / TalonPlatformer.PPM);
         
         FixtureDef fdef = new FixtureDef();
-        
         fdef.shape = shape;
         b2body.createFixture(fdef);
         
         EdgeShape head = new EdgeShape(); 
-        
         head.set(new Vector2(-2 / TalonPlatformer.PPM, 6 / TalonPlatformer.PPM), new Vector2(2 / TalonPlatformer.PPM, 6 / TalonPlatformer.PPM));
         fdef.shape = head;
         fdef.isSensor = true;
 
-        EdgeShape feet = new EdgeShape();
+        
+        FixtureDef fdef2 = new FixtureDef();
+        fdef2.shape = shape;
+        b2body.createFixture(fdef2);
 
+        EdgeShape feet = new EdgeShape();
         feet.set(new Vector2(-2 / TalonPlatformer.PPM, -6 / TalonPlatformer.PPM), new Vector2(2 / TalonPlatformer.PPM, -6 / TalonPlatformer.PPM));
-        fdef.shape = feet;
-        fdef.isSensor = true;
+        fdef2.shape = feet;
+        fdef2.isSensor = true;
 
         b2body.createFixture(fdef).setUserData("head");
-        b2body.createFixture(fdef).setUserData("feet");
+        b2body.createFixture(fdef2).setUserData("feet");
     }
     
+    public void die()
+    {
+        world.destroyBody(b2body);
+    }
+        
+
     public void resetPlayer() 
     {
         definePlayer();

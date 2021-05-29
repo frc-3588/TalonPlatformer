@@ -108,7 +108,7 @@ public class Hud implements Disposable
         }
         // //Level Two
         else if(player.b2body.getPosition().x >= 50.8 && player.b2body.getPosition().x <= 50.96 
-        && player.b2body.getPosition().y >= 0.3837 && player.b2body.getPosition().y <= 0.5437 && keyCount == 1)
+        && player.b2body.getPosition().y >= 0.3337 && player.b2body.getPosition().y <= 0.5437 && keyCount == 1)
         {
             keyCount++;
         }

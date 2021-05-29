@@ -13,10 +13,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -149,10 +146,9 @@ public class PlayScreen implements Screen
         });
 
         // Sets the position of each button at specific locations of the map
-        leftBtn.setPosition(0, 60);
-        rightBtn.setPosition(40, 60);
+        leftBtn.setPosition(20, 60);
+        rightBtn.setPosition(120, 60);
         jumpBtn.setPosition(Gdx.graphics.getWidth()-jumpBtn.getWidth(), 60);
-        
     }
 
     public TextureAtlas getAtlas() {
@@ -162,7 +158,6 @@ public class PlayScreen implements Screen
     @Override
     public void show()
     {
-
 
     }
 
@@ -180,13 +175,13 @@ public class PlayScreen implements Screen
         // TOUCH MOVE LEFT
         if(leftBtn.isPressed())
         {
-            player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+            player.b2body.applyLinearImpulse(new Vector2(-0.06f, 0), player.b2body.getWorldCenter(), true);
         }
             
         // TOUCH MOVE RIGHT
         if(rightBtn.isPressed())
         {
-            player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+            player.b2body.applyLinearImpulse(new Vector2(0.06f, 0), player.b2body.getWorldCenter(), true);
         }
 
         // TOUCH JUMP UP
@@ -257,12 +252,12 @@ public void update(float deltaTime) {
         game.batch.draw(region, 0, 0, TalonPlatformer.V_WIDTH, TalonPlatformer.V_HEIGHT);
         game.batch.end();
 
-//        if(hud.getKeycount() == 0)
-//        {
-//            music.stop();
-//            game.setScreen(new EndScreen(game, true));
-//        }
-//      
+        // Quick testing with ending the game immediately
+        // if(hud.getKeycount() == 0)
+        // {
+        //     music.stop();
+        //     game.setScreen(new EndScreen(game, true));
+        // }      
 
         if(player.getState() == State.DEAD)
         {
@@ -349,9 +344,9 @@ public void update(float deltaTime) {
         Gdx.input.setInputProcessor(null);
         stage.dispose();
         // b2dr.dispose();
-        // leftBtn.dispose();
-        // rightBtn.dispose();
-        // jumpBtn.dispose();
+        leftBtn.setDisabled(true);
+        rightBtn.setDisabled(true);
+        jumpBtn.setDisabled(true);
         hud.dispose();
         music.dispose();
     }
